@@ -1,0 +1,41 @@
+# 2M1
+```{r}
+p_grid <- seq(0, 1, length.out=20)
+prior <- rep(1,20)
+```
+
+## 1
+```{r}
+likelihood <- dbinom(3, 3, prob=p_grid)
+raw_posterior <- likelihood * prior
+posterior <- raw_posterior / sum(raw_posterior)
+# plot(p_grid, posterior, type="b")
+```
+
+## 2
+```{r}
+likelihood <- dbinom(3, 4, prob=p_grid)
+```
+etc, etc
+
+## 3
+```{r}
+likelihood <- dbinom(5, 7, prob=p_grid)
+```
+etc, etc
+
+# 2M2
+
+Set `prior = c(rep(0,10), rep(2, 10))` and proceed as above. 
+
+# 2M3
+Model p(Earth|land). Recall p(Earth|land) is equal to p(land|Earth) * p(Earth)
+/ p(land).
+
+```{r}
+p_earth <- 0.50
+p_land_given_earth <- 0.30
+p_land_given_mars <- 1
+p_land <- mean(p_land_give_earth, p_land_given_mars)
+(p_land_given_earth * p_earth) / p_land
+```
