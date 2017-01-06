@@ -81,3 +81,40 @@ the samples to calculate the 90% HDPI for _p_.
 samples <- sample(p_grid, prob=posterior, size=1e4, replace=TRUE)
 HPDI(samples, 0.9)
 ```
+
+__3M3.__ Construct a posterior predictive check for this model and data. This means simulate the distribution of samples, averaging over the posterior uncertainty in p. What is the probability of observing 8 water in 15 tosses?
+
+```{r}
+ppd <- rbinom(1e4, size=15, prob=samples)
+p_eight <- mean(ppd == 8)
+p_eight
+```
+
+_3M4._ Using the posterior distribution constructed from the new (8/15) data,now calculate the probability of observing 6 water in 9 tosses.
+
+Not sure based on the wording, but maybe this:
+```{r}
+ppd_nine <- rbinom(1e4, size=9, prob=samples)
+p_six <- mean(ppd_nine == 6)
+p_six
+```
+ 
+__3M5.__ Start over at 3M1, but now use a prior that is zero below p = 0.5 and a constant above p = 0.5.  is corresponds to prior information that a majority of the Earth’s surface is water. Repeat each problem above and compare the inferences. What di erence does the better prior make? If it helps, compare inferences (using both priors) to the true value p = 0.7.
+
+```{r}
+p_grid <- seq(0, 1, length.out=1000)
+prior <- c(rep(0, 500), rep(2, 500))
+likelihood <- dbinom(8, 15, p_grid)
+posterior <- likelihood * prior
+posterior <- posterior / sum(posterior)
+samples <- sample(p_grid, prob=posterior, size=1e4, replace=TRUE)
+HPDI(samples, 0.9)
+
+ppd <- rbinom(1e4, size=15, prob=samples)
+p_eight <- mean(ppd == 8)
+p_eight
+
+ppd_nine <- rbinom(1e4, size=9, prob=samples)
+p_six <- mean(ppd_nine == 6)
+p_six
+```
